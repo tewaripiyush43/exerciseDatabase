@@ -33,7 +33,7 @@ app.put("/update", async (req, res) => {
 
 app.get("/ping", async (req, res) => {
   const data = await updateData();
-  res.send(data);
+  res.send("pong");
 });
 
 async function fetchData() {
