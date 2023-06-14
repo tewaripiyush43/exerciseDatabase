@@ -5,6 +5,9 @@ const exerciseSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  description: {
+    type: String,
+  },
   equipment: {
     type: String,
     require: true,
