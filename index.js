@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
+import Express from "express";
 dotenv.config();
 import axios from "axios";
 import Exercise from "./models/Exercise.js";
 mongoose.connect(process.env.MONGO_URL).then(() => {
   console.log("Connected to MongoDB");
 });
+
+const app = Express();
 
 const options = {
   method: "GET",
@@ -15,6 +18,23 @@ const options = {
     "X-RapidAPI-Host": "exercisedb.p.rapidapi.com",
   },
 };
+
+app.get("/fetch", async (req, res) => {
+  const data = await fetchData();
+  res.send(data);
+});
+
+app.put("/update", async (req, res) => {
+  const data = await updateData();
+  // console.log(data);
+  // console.log("you returns");
+  res.send(data);
+});
+
+app.get("/ping", async (req, res) => {
+  const data = await updateData();
+  res.send(data);
+});
 
 async function fetchData() {
   try {
@@ -33,6 +53,8 @@ async function fetchData() {
       // console.log(exercise);
       exercise.save();
     }
+
+    return data;
   } catch (error) {
     console.error(error);
   }
@@ -47,16 +69,22 @@ async function updateData() {
       await Exercise.updateOne(
         { id: data[i]["id"] },
         {
-          //only upate the gifUrl field
           $set: { gifUrl: data[i]["gifUrl"] },
         }
       );
     }
+    // console.log(data);
+    return data;
   } catch (error) {
     console.error(error);
   }
 }
 
-updateData();
+// updateData();
 // process.exit();
 // fetchData();
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is listening on ${port}`);
+});
