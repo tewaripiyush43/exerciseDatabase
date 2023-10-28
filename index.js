@@ -53,6 +53,7 @@ async function fetchData() {
     });
 
     await Exercise.insertMany(exercises);
+    console.log(exercises);
     return exercises;
   } catch (err) {
     console.log(err);
