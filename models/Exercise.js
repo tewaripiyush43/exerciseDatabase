@@ -5,9 +5,16 @@ const exerciseSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  description: {
-    type: String,
-  },
+  instructions: [
+    {
+      type: String,
+    },
+  ],
+  secondaryMuscles: [
+    {
+      type: String,
+    },
+  ],
   equipment: {
     type: String,
     require: true,
@@ -31,5 +38,5 @@ const exerciseSchema = new mongoose.Schema({
   },
 });
 
-const Exercise = mongoose.model("Exercise", exerciseSchema);
+const Exercise = mongoose.model("exercisev2", exerciseSchema);
 export default Exercise;
