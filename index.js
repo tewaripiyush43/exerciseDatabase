@@ -4,6 +4,8 @@ import Express from "express";
 dotenv.config();
 import axios from "axios";
 import Exercise from "./models/Exercise.js";
+import ExerciseV1 from "./models/ExerciseV1.js";
+
 mongoose.connect(process.env.MONGO_URL).then(() => {
   console.log("Connected to MongoDB", "updating data");
   setTimeout(updateData, 10 * 1000);
@@ -73,6 +75,7 @@ async function updateData() {
     }));
 
     await Exercise.bulkWrite(updates);
+    await ExerciseV1.bulkWrite(updates);
     console.log("Updated data");
     return data;
   } catch (err) {
