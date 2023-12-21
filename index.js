@@ -7,8 +7,7 @@ import Exercise from "./models/Exercise.js";
 import ExerciseV1 from "./models/ExerciseV1.js";
 
 mongoose.connect(process.env.MONGO_URL).then(() => {
-  console.log("Connected to MongoDB", "updating data");
-  setTimeout(updateData, 10 * 1000);
+  console.log("Connected to MongoDB");
 });
 
 const app = Express();
@@ -23,19 +22,19 @@ const options = {
   },
 };
 
-app.get("/fetch", async (req, res) => {
+app.get("/api/fetch", async (req, res) => {
   const data = await fetchData();
   res.send(data);
 });
 
-app.put("/update", async (req, res) => {
+app.put("/api/update", async (req, res) => {
   const data = await updateData();
-  res.send(data);
+  res.send("Data Updated");
 });
 
-app.get("/ping", async (req, res) => {
-  res.send("pong");
-});
+// app.get("/api/ping", async (req, res) => {
+//   res.send("pong");
+// });
 
 async function fetchData() {
   try {
@@ -55,7 +54,7 @@ async function fetchData() {
     });
 
     await Exercise.insertMany(exercises);
-    console.log(exercises);
+    // console.log(exercises);
     return exercises;
   } catch (err) {
     console.log(err);
@@ -76,15 +75,12 @@ async function updateData() {
 
     await Exercise.bulkWrite(updates);
     await ExerciseV1.bulkWrite(updates);
-    console.log("Updated data");
+    console.log("Data Updated");
     return data;
   } catch (err) {
     console.log(err);
   }
 }
-
-// updateData();
-// fetchData();
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => {
